@@ -3,14 +3,14 @@ CubicleSoft PHP Extension:  Synchronization Objects (sync)
 
 The 'sync' extension introduces synchonization objects into PHP.  Named and unnamed Mutex, Semaphore, Event, and Reader-Writer objects provide OS-level synchronization on both *NIX (POSIX semaphores required) and Windows platforms.  The extension comes with a test suite that integrates cleanly into 'make test'.
 
-This extension has a liberal open source license.  MIT, LGPL, or version 3.01 of the PHP license.  Your choice.  And, of course, it sits on GitHub for all of that pull request and issue tracker goodness to easily submit changes and ideas respectively.
+This extension uses the liberal MIT open source license.  And, of course, it sits on GitHub for all of that pull request and issue tracker goodness to easily submit changes and ideas respectively.
 
 Details
 -------
 
 An exception may be thrown from the constructors if the target object can't be created for some reason.
 
-All synchronization objects are attempted to be unlocked cleanly within PHP itself.  The exception is if an object's $autounlock option is initialized to false.  If PHP terminates a script and doesn't unlock the object, it can leave it in an unpredictable state.
+All synchronization objects are attempted to be unlocked cleanly within PHP itself.  The exception is if an object's $autounlock option is initialized to false.  If PHP terminates a script and doesn't unlock the object, it can leave the object in an unpredictable state.
 
 NOTE:  When using "named" objects, the initialization must be identical for a given name and have a specific purpose.  Reusing named objects for other purposes is not a good idea and will probably result in breaking both applications.  However, different object types can share the same name (e.g. a Mutex and an Event object can have the same name).
 
