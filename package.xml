@@ -3,20 +3,21 @@
  <name>sync</name>
  <channel>pecl.php.net</channel>
  <summary>Named and unnamed synchronization objects</summary>
- <description>Introduces synchonization objects into PHP.  Named and unnamed Mutex (SyncMutex), Semaphore (SyncSemaphore), Event (SyncEvent), and Reader-Writer (SyncReaderWriter) objects provide OS-level synchronization on both *NIX (POSIX semaphores required) and Windows platforms.
-
-The project sits over on GitHub for all of that pull request and issue tracker goodness to easily submit changes and ideas respectively:
-
-https://github.com/cubiclesoft/php-ext-sync
-</description>
+ <description>The 'sync' extension introduces synchonization objects into PHP.  Named and unnamed Mutex, Semaphore, Event, and Reader-Writer objects provide OS-level synchronization on both *NIX (POSIX semaphores required) and Windows platforms.</description>
  <lead>
-  <name>CubicleSoft</name>
-  <user>cubie</user>
-  <email>support@cubiclesoft.com</email>
+  <name>Thomas Hruska</name>
+  <user>cubic</user>
+  <email>cubic@php.net</email>
   <active>yes</active>
  </lead>
- <date>2014-05-08</date>
- <time>06:00:00</time>
+ <lead>
+  <name>Ferenc Kovacs</name>
+  <user>tyrael</user>
+  <email>tyrael@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2014-07-05</date>
+ <time>08:00:00</time>
  <version>
   <release>1.0.0</release>
   <api>1.0.0</api>
