@@ -14,7 +14,11 @@
 #include "php_ini.h"
 #include "zend_exceptions.h"
 #include "ext/standard/info.h"
+#if defined(PHP_WIN32) && PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION <= 4
+#include "win32/php_stdint.h"
+#else
 #include <stdint.h>
+#endif
 #include "php_sync.h"
 
 /* {{{ sync_module_entry
