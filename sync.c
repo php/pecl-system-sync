@@ -135,7 +135,7 @@ int sync_WaitForSemaphore(sem_t *SemPtr, uint32_t Wait)
 
 
 /* Mutex */
-PHPAPI zend_class_entry *sync_Mutex_ce;
+PHP_SYNC_API zend_class_entry *sync_Mutex_ce;
 
 void sync_Mutex_free_object(void *object TSRMLS_DC);
 
@@ -429,7 +429,7 @@ static const zend_function_entry sync_Mutex_methods[] = {
 
 
 /* Semaphore */
-PHPAPI zend_class_entry *sync_Semaphore_ce;
+PHP_SYNC_API zend_class_entry *sync_Semaphore_ce;
 
 void sync_Semaphore_free_object(void *object TSRMLS_DC);
 
@@ -665,7 +665,7 @@ static const zend_function_entry sync_Semaphore_methods[] = {
 
 
 /* Event */
-PHPAPI zend_class_entry *sync_Event_ce;
+PHP_SYNC_API zend_class_entry *sync_Event_ce;
 
 void sync_Event_free_object(void *object TSRMLS_DC);
 
@@ -1015,7 +1015,7 @@ static const zend_function_entry sync_Event_methods[] = {
 
 
 /* Reader-Writer */
-PHPAPI zend_class_entry *sync_ReaderWriter_ce;
+PHP_SYNC_API zend_class_entry *sync_ReaderWriter_ce;
 
 void sync_ReaderWriter_free_object(void *object TSRMLS_DC);
 
