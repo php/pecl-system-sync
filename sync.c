@@ -21,6 +21,11 @@
 #endif
 #include "php_sync.h"
 
+/* PHP_FE_END not define in php < 5.3.7 */
+#ifndef PHP_FE_END
+#define PHP_FE_END {NULL, NULL, NULL}
+#endif
+
 /* {{{ sync_module_entry
  */
 zend_module_entry sync_module_entry = {
