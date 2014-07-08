@@ -23,6 +23,9 @@ if test "$PHP_SYNC" != "no"; then
     AC_MSG_ERROR([sem_open() is not available on this platform])
   ])
 
+  PHP_ADD_LIBRARY(rt,,SYNC_SHARED_LIBADD)
+  PHP_SUBST(SYNC_SHARED_LIBADD)
+
   dnl # Finish defining the basic extension support.
   AC_DEFINE(HAVE_SYNC, 1, [Whether you have synchronization object support])
   PHP_NEW_EXTENSION(sync, sync.c, $ext_shared)
