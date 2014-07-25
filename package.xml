@@ -3,23 +3,17 @@
  <name>sync</name>
  <channel>pecl.php.net</channel>
  <summary>Named and unnamed synchronization objects</summary>
- <description>The 'sync' extension introduces synchonization objects into PHP.  Named and unnamed Mutex, Semaphore, Event, and Reader-Writer objects provide OS-level synchronization on both *NIX (POSIX semaphores required) and Windows platforms.</description>
+ <description>The 'sync' extension introduces synchronization objects into PHP.  Named and unnamed Mutex, Semaphore, Event, and Reader-Writer objects provide OS-level synchronization on both *NIX (POSIX semaphores required) and Windows platforms.</description>
  <lead>
   <name>Thomas Hruska</name>
   <user>cubic</user>
   <email>cubic@php.net</email>
   <active>yes</active>
  </lead>
- <lead>
-  <name>Ferenc Kovacs</name>
-  <user>tyrael</user>
-  <email>tyrael@php.net</email>
-  <active>yes</active>
- </lead>
- <date>2014-07-05</date>
+ <date>2014-07-25</date>
  <time>08:00:00</time>
  <version>
-  <release>1.0.0</release>
+  <release>1.0.1</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -28,7 +22,8 @@
  </stability>
  <license uri="http://opensource.org/licenses/MIT">MIT License</license>
  <notes>
-- Initial release.
+- Fixed Reader-Writer objects.
+- Removed a lead from package maintainers list.
  </notes>
  <contents>
   <dir name="/">
@@ -45,6 +40,7 @@
    <file name="tests/011.phpt" role="test" />
    <file name="tests/012.phpt" role="test" />
    <file name="tests/013.phpt" role="test" />
+   <file name="tests/014.phpt" role="test" />
    <file name="CREDITS" role="doc" />
    <file name="LICENSE" role="doc" />
    <file name="README.md" role="doc" />
