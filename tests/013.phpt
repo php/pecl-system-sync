@@ -8,14 +8,14 @@ SyncReaderWriter - named reader-writer allocation, locking, and unlocking.
 
 	var_dump($readwrite->readlock(0));
 	var_dump($readwrite->readlock(0));
-	var_dump($readwrite->readunlock(0));
+	var_dump($readwrite->readunlock());
 	var_dump($readwrite->writelock(0));
-	var_dump($readwrite->readunlock(0));
-	var_dump($readwrite->readunlock(0));
+	var_dump($readwrite->readunlock());
+	var_dump($readwrite->readunlock());
 	var_dump($readwrite->writelock(0));
 	var_dump($readwrite->writelock(0));
 	var_dump($readwrite->readlock(0));
-	var_dump($readwrite->writeunlock(0));
+	var_dump($readwrite->writeunlock());
 ?>
 --EXPECT--
 bool(true)
