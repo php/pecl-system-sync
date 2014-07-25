@@ -14,8 +14,17 @@
 #include "php_ini.h"
 #include "zend_exceptions.h"
 #include "ext/standard/info.h"
+#if defined(PHP_WIN32) && PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION <= 4
+#include "win32/php_stdint.h"
+#else
 #include <stdint.h>
+#endif
 #include "php_sync.h"
+
+/* PHP_FE_END not define in php < 5.3.7 */
+#ifndef PHP_FE_END
+#define PHP_FE_END {NULL, NULL, NULL}
+#endif
 
 /* {{{ sync_module_entry
  */
@@ -131,7 +140,7 @@ int sync_WaitForSemaphore(sem_t *SemPtr, uint32_t Wait)
 
 
 /* Mutex */
-PHPAPI zend_class_entry *sync_Mutex_ce;
+PHP_SYNC_API zend_class_entry *sync_Mutex_ce;
 
 void sync_Mutex_free_object(void *object TSRMLS_DC);
 
@@ -425,7 +434,7 @@ static const zend_function_entry sync_Mutex_methods[] = {
 
 
 /* Semaphore */
-PHPAPI zend_class_entry *sync_Semaphore_ce;
+PHP_SYNC_API zend_class_entry *sync_Semaphore_ce;
 
 void sync_Semaphore_free_object(void *object TSRMLS_DC);
 
@@ -661,7 +670,7 @@ static const zend_function_entry sync_Semaphore_methods[] = {
 
 
 /* Event */
-PHPAPI zend_class_entry *sync_Event_ce;
+PHP_SYNC_API zend_class_entry *sync_Event_ce;
 
 void sync_Event_free_object(void *object TSRMLS_DC);
 
@@ -1011,7 +1020,7 @@ static const zend_function_entry sync_Event_methods[] = {
 
 
 /* Reader-Writer */
-PHPAPI zend_class_entry *sync_ReaderWriter_ce;
+PHP_SYNC_API zend_class_entry *sync_ReaderWriter_ce;
 
 void sync_ReaderWriter_free_object(void *object TSRMLS_DC);
 

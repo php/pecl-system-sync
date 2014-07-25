@@ -4,7 +4,7 @@ SyncSemaphore (2) - named semaphore allocation, locking, and unlocking.
 <?php if (!extension_loaded("sync"))  echo "skip"; ?>
 --FILE--
 <?php
-	$semaphore = new SyncSemaphore("Awesome2", 2);
+	$semaphore = new SyncSemaphore("Awesome2_".PHP_INT_SIZE, 2);
 
 	var_dump($semaphore->lock());
 	var_dump($semaphore->unlock());
