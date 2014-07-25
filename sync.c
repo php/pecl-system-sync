@@ -1075,6 +1075,8 @@ int sync_ReaderWriter_readunlock_internal(sync_ReaderWriter_object *obj)
 	Result = WaitForSingleObject(obj->MxWinRSemMutex, INFINITE);
 	if (Result != WAIT_OBJECT_0)  return 0;
 
+	if (obj->MxReadLocks)  obj->MxReadLocks--;
+
 	/* Release the semaphore. */
 	if (!ReleaseSemaphore(obj->MxWinRSemaphore, 1, &Val))
 	{
@@ -1094,8 +1096,6 @@ int sync_ReaderWriter_readunlock_internal(sync_ReaderWriter_object *obj)
 		}
 	}
 
-	if (obj->MxReadLocks)  obj->MxReadLocks--;
-
 	/* Release the semaphore mutex. */
 	ReleaseSemaphore(obj->MxWinRSemMutex, 1, NULL);
 
@@ -1110,14 +1110,28 @@ int sync_ReaderWriter_readunlock_internal(sync_ReaderWriter_object *obj)
 	/* Acquire the semaphore mutex. */
 	if (!sync_WaitForSemaphore(obj->MxSemRSemMutex, INFINITE))  return 0;
 
+	if (obj->MxReadLocks)  obj->MxReadLocks--;
+
 	/* Release the semaphore. */
 	Result = sem_post(obj->MxSemRSemaphore);
+	if (Result != 0)
+	{
+		sem_post(obj->MxSemRSemMutex);
+
+		return 0;
+	}
 
 	/* Update the event state. */
 	sem_getvalue(obj->MxSemRSemaphore, &Val);
-	if (Val == SEM_VALUE_MAX)  sem_post(obj->MxSemRWaitEvent);
+	if (Val == SEM_VALUE_MAX)
+	{
+		if (sem_post(obj->MxSemRWaitEvent) != 0)
+		{
+			sem_post(obj->MxSemRSemMutex);
 
-	if (obj->MxReadLocks)  obj->MxReadLocks--;
+			return 0;
+		}
+	}
 
 	/* Release the semaphore mutex. */
 	sem_post(obj->MxSemRSemMutex);
@@ -1357,6 +1371,8 @@ PHP_METHOD(sync_ReaderWriter, readlock)
 		RETURN_FALSE;
 	}
 
+	obj->MxReadLocks++;
+
 	/* Release the mutexes. */
 	ReleaseSemaphore(obj->MxWinRSemMutex, 1, NULL);
 	ReleaseSemaphore(obj->MxWinWWaitMutex, 1, NULL);
@@ -1412,13 +1428,13 @@ PHP_METHOD(sync_ReaderWriter, readlock)
 		}
 	}
 
+	obj->MxReadLocks++;
+
 	/* Release the mutexes. */
 	sem_post(obj->MxSemRSemMutex);
 	sem_post(obj->MxSemWWaitMutex);
 
 #endif
-
-	obj->MxReadLocks++;
 
 	RETURN_TRUE;
 }
@@ -1467,7 +1483,7 @@ PHP_METHOD(sync_ReaderWriter, writelock)
 	/* Acquire the write lock mutex. */
 	if (!sync_WaitForSemaphore(obj->MxSemWWaitMutex, WaitAmt))  RETURN_FALSE;
 
-	// Wait for readers to reach zero.
+	/* Wait for readers to reach zero. */
 	CurrTime = (WaitAmt == INFINITE ? 0 : sync_GetUnixMicrosecondTime() / 1000000);
 	if (!sync_WaitForSemaphore(obj->MxSemRWaitEvent, WaitAmt - (CurrTime - StartTime)))
 	{
@@ -1475,6 +1491,9 @@ PHP_METHOD(sync_ReaderWriter, writelock)
 
 		RETURN_FALSE;
 	}
+
+	/* Release the semaphore to avoid a later deadlock. */
+	sem_post(obj->MxSemRWaitEvent);
 
 #endif
 
