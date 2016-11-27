@@ -4,7 +4,7 @@ SyncEvent - named manual event object allocation and firing.
 <?php if (!extension_loaded("sync"))  echo "skip"; ?>
 --FILE--
 <?php
-	$event = new SyncEvent("Awesome2_".PHP_INT_SIZE, true);
+	$event = new SyncEvent("Awesome2_" . PHP_INT_SIZE, true);
 
 	var_dump($event->wait(0));
 	var_dump($event->fire());

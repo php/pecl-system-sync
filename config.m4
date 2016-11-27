@@ -5,22 +5,22 @@ PHP_ARG_ENABLE(sync, whether to enable synchronization object support (--enable-
   [  --enable-sync           Enable synchronization object support])
 
 if test "$PHP_SYNC" != "no"; then
-  dnl # Check for sem_open() support.
-  AC_MSG_CHECKING([for sem_open in -pthread -lrt])
+  dnl # Check for shm_open() support.
+  AC_MSG_CHECKING([for shm_open in -pthread -lrt])
 
   SAVED_LIBS="$LIBS"
   LIBS="$LIBS -pthread -lrt"
 
   AC_TRY_LINK([
     #include <fcntl.h>
-    #include <semaphore.h>
+    #include <sys/mman.h>
   ], [
-    sem_t *MxSemMutex = sem_open("", O_CREAT, 0666, 1);
+    int fp = shm_open("", O_RDWR | O_CREAT | O_EXCL, 0666);
   ], [
-    have_sem_open=yes
+    have_shm_open=yes
     AC_MSG_RESULT([yes])
   ], [
-    AC_MSG_ERROR([sem_open() is not available on this platform])
+    AC_MSG_ERROR([shm_open() is not available on this platform])
   ])
 
   PHP_ADD_LIBRARY(rt,,SYNC_SHARED_LIBADD)

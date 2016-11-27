@@ -3,18 +3,18 @@
  <name>sync</name>
  <channel>pecl.php.net</channel>
  <summary>Named and unnamed synchronization objects</summary>
- <description>The 'sync' extension introduces synchronization objects into PHP.  Named and unnamed Mutex, Semaphore, Event, and Reader-Writer objects provide OS-level synchronization on both *NIX (POSIX semaphores required) and Windows platforms.</description>
+ <description>The 'sync' extension introduces synchronization objects into PHP.  Named and unnamed Mutex, Semaphore, Event, Reader-Writer, and named Shared Memory objects provide OS-level synchronization mechanisms on both *NIX (POSIX shared memory and pthread shared memory synchronization required) and Windows platforms.  This extension is a direct port of and compatible with the cross platform 'sync' library:  https://github.com/cubiclesoft/cross-platform-cpp</description>
  <lead>
   <name>Thomas Hruska</name>
   <user>cubic</user>
   <email>cubic@php.net</email>
   <active>yes</active>
  </lead>
- <date>2014-07-25</date>
- <time>08:00:00</time>
+ <date>2016-11-26</date>
+ <time>19:00:00</time>
  <version>
-  <release>1.0.1</release>
-  <api>1.0.0</api>
+  <release>1.1.0</release>
+  <api>1.1.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -22,8 +22,12 @@
  </stability>
  <license uri="http://opensource.org/licenses/MIT">MIT License</license>
  <notes>
-- Fixed Reader-Writer objects.
-- Removed a lead from package maintainers list.
+- Added cross-platform named shared memory objects.
+- Rewrote *NIX objects to be much lighter on shared resources.
+- Fixed null name issue.
+- Fixed object memory leak issue.
+- Now works on Mac OSX.
+- Now works on PHP 7.  The same code base also works on PHP 5.
  </notes>
  <contents>
   <dir name="/">
@@ -41,6 +45,8 @@
    <file name="tests/012.phpt" role="test" />
    <file name="tests/013.phpt" role="test" />
    <file name="tests/014.phpt" role="test" />
+   <file name="tests/015.phpt" role="test" />
+   <file name="tests/016.phpt" role="test" />
    <file name="CREDITS" role="doc" />
    <file name="LICENSE" role="doc" />
    <file name="README.md" role="doc" />

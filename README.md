@@ -1,7 +1,9 @@
 CubicleSoft PHP Extension:  Synchronization Objects (sync)
 ==========================================================
 
-The 'sync' extension introduces synchronization objects into PHP.  Named and unnamed Mutex, Semaphore, Event, and Reader-Writer objects provide OS-level synchronization on both *NIX (POSIX semaphores required) and Windows platforms.  The extension comes with a test suite that integrates cleanly into 'make test'.
+The 'sync' extension introduces synchronization objects into PHP.  Named and unnamed Mutex, Semaphore, Event, Reader-Writer, and named Shared Memory objects provide OS-level synchronization mechanisms on both *NIX (POSIX shared memory and pthread shared memory synchronization required) and Windows platforms.  The extension comes with a test suite that integrates cleanly into 'make test'.
+
+The 'sync' extension is a direct port of and compatible with the cross platform 'sync' library:  https://github.com/cubiclesoft/cross-platform-cpp
 
 This extension uses the liberal MIT open source license.  And, of course, it sits on GitHub for all of that pull request and issue tracker goodness to easily submit changes and ideas respectively.
 
@@ -14,7 +16,7 @@ All synchronization objects are attempted to be unlocked cleanly within PHP itse
 
 NOTE:  When using "named" objects, the initialization must be identical for a given name and have a specific purpose.  Reusing named objects for other purposes is not a good idea and will probably result in breaking both applications.  However, different object types can share the same name (e.g. a Mutex and an Event object can have the same name).
 
-```
+````
 void SyncMutex::__construct([string $name = null])
   Constructs a named or unnamed mutex object.
 
@@ -35,7 +37,7 @@ bool SyncSemaphore::unlock([int &$prevcount])
   Unlocks a semaphore object.
 
 
-void SyncEvent::__construct([string $name = null, [bool $manual = false]])
+void SyncEvent::__construct([string $name = null, [bool $manual = false], [bool $prefire = false]])
   Constructs a named or unnamed event object.
 
 bool SyncEvent::wait([int $wait = -1])
@@ -62,7 +64,23 @@ bool SyncReaderWriter::readunlock()
 
 bool SyncReaderWriter::writeunlock()
   Write unlocks a reader-writer object.
-```
+
+
+void SyncSharedMemory::__construct(string $name, int $size)
+  Constructs a named shared memory object.
+
+bool SyncSharedMemory::first()
+  Returns whether or not this shared memory segment is the first time accessed (i.e. not initialized).
+
+int SyncSharedMemory::size()
+  Returns the shared memory size.
+
+int SyncSharedMemory::write(string $string, [int $start = 0])
+  Copies data to shared memory.
+
+string SyncSharedMemory::read([int $start = 0, [int $length = null]])
+  Copies data from shared memory.
+````
 
 Usage Examples
 --------------
@@ -94,7 +112,7 @@ $mutex2->unlock();
 Example Semaphore usage:
 
 ```php
-$semaphore = new SyncSemaphore("LimitedResource_2clients", 2);
+$semaphore = new SyncSemaphore("LimitedResource_2_clients", 2);
 
 if (!$semaphore->lock(3000))
 {
@@ -131,4 +149,18 @@ $readwrite->readunlock();
 $readwrite->writelock();
 ...
 $readwrite->writeunlock();
+```
+
+Example Shared Memory usage:
+
+```php
+// You will probably need to protect shared memory with other synchronization objects.
+// Shared memory goes away when the last reference to it disappears.
+$mem = new SyncSharedMemory("AppReportName", 1024);
+if ($mem->first())
+{
+	// Do first time initialization work here.
+}
+
+$result = $mem->write(json_encode(array("name" => "my_report.txt")));
 ```

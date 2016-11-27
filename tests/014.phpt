@@ -4,7 +4,7 @@ SyncReaderWriter - named reader-writer allocation, locking, and unlocking freeze
 <?php if (!extension_loaded("sync"))  echo "skip"; ?>
 --FILE--
 <?php
-	$readwrite = new SyncReaderWriter("Awesome_".PHP_INT_SIZE);
+	$readwrite = new SyncReaderWriter("Awesome_" . PHP_INT_SIZE);
 
 	var_dump($readwrite->readlock(0));
 	var_dump($readwrite->readlock(0));

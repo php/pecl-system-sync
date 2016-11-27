@@ -4,7 +4,7 @@ SyncMutex - named mutex allocation, locking, and unlocking.
 <?php if (!extension_loaded("sync"))  echo "skip"; ?>
 --FILE--
 <?php
-	$mutex = new SyncMutex("Awesome_".PHP_INT_SIZE);
+	$mutex = new SyncMutex("Awesome_" . PHP_INT_SIZE);
 
 	var_dump($mutex->lock(0));
 	var_dump($mutex->lock(0));
