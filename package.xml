@@ -10,10 +10,10 @@
   <email>cubic@php.net</email>
   <active>yes</active>
  </lead>
- <date>2016-11-26</date>
- <time>19:00:00</time>
+ <date>2017-02-20</date>
+ <time>05:00:00</time>
  <version>
-  <release>1.1.0</release>
+  <release>1.1.1</release>
   <api>1.1.0</api>
  </version>
  <stability>
@@ -22,12 +22,7 @@
  </stability>
  <license uri="http://opensource.org/licenses/MIT">MIT License</license>
  <notes>
-- Added cross-platform named shared memory objects.
-- Rewrote *NIX objects to be much lighter on shared resources.
-- Fixed null name issue.
-- Fixed object memory leak issue.
-- Now works on Mac OSX.
-- Now works on PHP 7.  The same code base also works on PHP 5.
+- Fixed *NIX event object sync_WaitForUnixEvent() issues.
  </notes>
  <contents>
   <dir name="/">

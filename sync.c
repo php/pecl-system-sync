@@ -550,7 +550,7 @@ int sync_WaitForUnixEvent(sync_UnixEventWrapper *UnixEvent, uint32_t Wait)
 	int Result = 0;
 
 	/* Avoid a potential starvation issue by only allowing signaled manual events OR if there are no other waiting threads. */
-	if (UnixEvent->MxSignaled[0] != '\x00' && (UnixEvent->MxManual[0] == '\x00' || !UnixEvent->MxWaiting[0]))
+	if (UnixEvent->MxSignaled[0] != '\x00' && (UnixEvent->MxManual[0] != '\x00' || !UnixEvent->MxWaiting[0]))
 	{
 		/* Reset auto events. */
 		if (UnixEvent->MxManual[0] == '\x00')  UnixEvent->MxSignaled[0] = '\x00';
@@ -568,10 +568,10 @@ int sync_WaitForUnixEvent(sync_UnixEventWrapper *UnixEvent, uint32_t Wait)
 			if (Result2 != 0)  break;
 		} while (UnixEvent->MxSignaled[0] == '\x00');
 
+		UnixEvent->MxWaiting[0]--;
+
 		if (Result2 == 0)
 		{
-			UnixEvent->MxWaiting[0]--;
-
 			/* Reset auto events. */
 			if (UnixEvent->MxManual[0] == '\x00')  UnixEvent->MxSignaled[0] = '\x00';
 
@@ -584,15 +584,21 @@ int sync_WaitForUnixEvent(sync_UnixEventWrapper *UnixEvent, uint32_t Wait)
 	}
 	else
 	{
-		UnixEvent->MxWaiting[0]++;
-
 		struct timespec TempTime;
 
-		if (sync_CSGX__ClockGetTimeRealtime(&TempTime) == -1)  return 0;
+		if (sync_CSGX__ClockGetTimeRealtime(&TempTime) == -1)
+		{
+			pthread_mutex_unlock(UnixEvent->MxMutex);
+
+			return 0;
+		}
+
 		TempTime.tv_sec += Wait / 1000;
 		TempTime.tv_nsec += (Wait % 1000) * 1000000;
 		TempTime.tv_sec += TempTime.tv_nsec / 1000000000;
 		TempTime.tv_nsec = TempTime.tv_nsec % 1000000000;
+
+		UnixEvent->MxWaiting[0]++;
 
 		int Result2;
 		do
@@ -602,10 +608,10 @@ int sync_WaitForUnixEvent(sync_UnixEventWrapper *UnixEvent, uint32_t Wait)
 			if (Result2 != 0)  break;
 		} while (UnixEvent->MxSignaled[0] == '\x00');
 
+		UnixEvent->MxWaiting[0]--;
+
 		if (Result2 == 0)
 		{
-			UnixEvent->MxWaiting[0]--;
-
 			/* Reset auto events. */
 			if (UnixEvent->MxManual[0] == '\x00')  UnixEvent->MxSignaled[0] = '\x00';
 
@@ -625,7 +631,7 @@ int sync_FireUnixEvent(sync_UnixEventWrapper *UnixEvent)
 	UnixEvent->MxSignaled[0] = '\x01';
 
 	/* Let all waiting threads through for manual events, otherwise just one waiting thread (if any). */
-	if (UnixEvent->MxManual[0] == '\x00')  pthread_cond_broadcast(UnixEvent->MxCond);
+	if (UnixEvent->MxManual[0] != '\x00')  pthread_cond_broadcast(UnixEvent->MxCond);
 	else  pthread_cond_signal(UnixEvent->MxCond);
 
 	pthread_mutex_unlock(UnixEvent->MxMutex);

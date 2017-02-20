@@ -6,7 +6,7 @@ SyncEvent - unnamed manual event object allocation and firing.
 <?php
 	$event = new SyncEvent(null, true);
 
-	var_dump($event->wait(0));
+	var_dump($event->wait(1));
 	var_dump($event->fire());
 	var_dump($event->wait(0));
 	var_dump($event->wait(0));
