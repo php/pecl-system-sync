@@ -33,6 +33,15 @@
 #define PHP_FE_END {NULL, NULL, NULL}
 #endif
 
+/* for PHP 8 */
+#ifndef TSRMLS_D
+#define TSRMLS_D void
+#define TSRMLS_DC
+#define TSRMLS_C
+#define TSRMLS_CC
+#define TSRMLS_FETCH()
+#endif
+
 /* {{{ sync_module_entry
  */
 zend_module_entry sync_module_entry = {
