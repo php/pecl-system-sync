@@ -33,7 +33,7 @@
 #define PHP_FE_END {NULL, NULL, NULL}
 #endif
 
-/* for PHP 8 */
+/* For PHP 8 */
 #ifndef TSRMLS_D
 #define TSRMLS_D void
 #define TSRMLS_DC
