@@ -885,7 +885,7 @@ PHP_METHOD(sync_Mutex, __construct)
 	size_t Pos, TempSize;
 #endif
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s", &name, &name_len) == FAILURE)  return;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s!", &name, &name_len) == FAILURE)  return;
 
 	obj = (sync_Mutex_object *)PORTABLE_zend_object_store_get_object();
 
@@ -1126,7 +1126,7 @@ PHP_METHOD(sync_Semaphore, __construct)
 	size_t Pos, TempSize;
 #endif
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|sll", &name, &name_len, &initialval, &autounlock) == FAILURE)  return;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s!ll", &name, &name_len, &initialval, &autounlock) == FAILURE)  return;
 
 	obj = (sync_Semaphore_object *)PORTABLE_zend_object_store_get_object();
 
@@ -1342,7 +1342,7 @@ PHP_METHOD(sync_Event, __construct)
 	size_t Pos, TempSize;
 #endif
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|sll", &name, &name_len, &manual, &prefire) == FAILURE)  return;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s!ll", &name, &name_len, &manual, &prefire) == FAILURE)  return;
 
 	obj = (sync_Event_object *)PORTABLE_zend_object_store_get_object();
 
@@ -1675,7 +1675,7 @@ PHP_METHOD(sync_ReaderWriter, __construct)
 	size_t Pos, TempSize;
 #endif
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|sl", &name, &name_len, &autounlock) == FAILURE)  return;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s!l", &name, &name_len, &autounlock) == FAILURE)  return;
 
 	obj = (sync_ReaderWriter_object *)PORTABLE_zend_object_store_get_object();
 

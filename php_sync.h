@@ -12,7 +12,7 @@
 extern zend_module_entry sync_module_entry;
 #define phpext_sync_ptr &sync_module_entry
 
-#define PHP_SYNC_VERSION   "1.1.2"
+#define PHP_SYNC_VERSION   "1.1.3"
 
 #ifdef PHP_WIN32
 #	define PHP_SYNC_API __declspec(dllexport)
