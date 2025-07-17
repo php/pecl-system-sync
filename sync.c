@@ -42,6 +42,13 @@
 #define TSRMLS_FETCH()
 #endif
 
+#if PHP_VERSION_ID >= 80500
+static zend_class_entry *zend_exception_get_default(void)
+{
+	return zend_ce_exception;
+}
+#endif
+
 /* {{{ sync_module_entry
  */
 zend_module_entry sync_module_entry = {
