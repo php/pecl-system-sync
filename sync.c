@@ -900,7 +900,11 @@ PHP_METHOD(sync_Mutex, __construct)
 	obj->MxWinMutex = CreateMutexA(&SecAttr, FALSE, name);
 	if (obj->MxWinMutex == NULL)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Mutex could not be created", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Mutex could not be created", 0 TSRMLS_CC);
+#endif
 		return;
 	}
 
@@ -912,7 +916,11 @@ PHP_METHOD(sync_Mutex, __construct)
 
 	if (Result < 0)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Mutex could not be created", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Mutex could not be created", 0 TSRMLS_CC);
+#endif
 
 		return;
 	}
@@ -974,7 +982,12 @@ PHP_METHOD(sync_Mutex, lock)
 
 	if (pthread_mutex_lock(&obj->MxPthreadCritSection) != 0)
 	{
+		
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Unable to acquire mutex critical section", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Unable to acquire mutex critical section", 0 TSRMLS_CC);
+#endif
 
 		RETURN_FALSE;
 	}
@@ -1143,7 +1156,11 @@ PHP_METHOD(sync_Semaphore, __construct)
 	obj->MxWinSemaphore = CreateSemaphoreA(&SecAttr, (LONG)initialval, (LONG)initialval, name);
 	if (obj->MxWinSemaphore == NULL)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Semaphore could not be created", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Semaphore could not be created", 0 TSRMLS_CC);
+#endif
 		return;
 	}
 
@@ -1155,7 +1172,11 @@ PHP_METHOD(sync_Semaphore, __construct)
 
 	if (Result < 0)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Semaphore could not be created", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Semaphore could not be created", 0 TSRMLS_CC);
+#endif
 
 		return;
 	}
@@ -1357,7 +1378,11 @@ PHP_METHOD(sync_Event, __construct)
 	obj->MxWinWaitEvent = CreateEventA(&SecAttr, (BOOL)manual, (prefire ? TRUE : FALSE), name);
 	if (obj->MxWinWaitEvent == NULL)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Event object could not be created", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Event object could not be created", 0 TSRMLS_CC);
+#endif
 		return;
 	}
 
@@ -1369,7 +1394,11 @@ PHP_METHOD(sync_Event, __construct)
 
 	if (Result < 0)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Event object could not be created", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Event object could not be created", 0 TSRMLS_CC);
+#endif
 
 		return;
 	}
@@ -1706,7 +1735,11 @@ PHP_METHOD(sync_ReaderWriter, __construct)
 
 	if (obj->MxWinRSemMutex == NULL || obj->MxWinRSemaphore == NULL || obj->MxWinRWaitEvent == NULL || obj->MxWinWWaitMutex == NULL)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Reader-Writer object could not be created", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Reader-Writer object could not be created", 0 TSRMLS_CC);
+#endif
 
 		return;
 	}
@@ -1719,7 +1752,11 @@ PHP_METHOD(sync_ReaderWriter, __construct)
 
 	if (Result < 0)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Reader-Writer object could not be created", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Reader-Writer object could not be created", 0 TSRMLS_CC);
+#endif
 
 		return;
 	}
@@ -2053,7 +2090,11 @@ PHP_METHOD(sync_SharedMemory, __construct)
 
 	if (name_len < 1)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "An invalid name was passed", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "An invalid name was passed", 0 TSRMLS_CC);
+#endif
 
 		return;
 	}
@@ -2077,7 +2118,11 @@ PHP_METHOD(sync_SharedMemory, __construct)
 
 		if (obj->MxFile == NULL)
 		{
+#if PHP_VERSION_ID < 80500
 			zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Shared memory file mapping could not be created/opened", 0 TSRMLS_CC);
+#else
+			zend_throw_exception(zend_ce_exception, "Shared memory file mapping could not be created/opened", 0 TSRMLS_CC);
+#endif
 
 			return;
 		}
@@ -2093,7 +2138,11 @@ PHP_METHOD(sync_SharedMemory, __construct)
 
 	if (obj->MxMem == NULL)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Shared memory segment could not be mapped", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Shared memory segment could not be mapped", 0 TSRMLS_CC);
+#endif
 
 		return;
 	}
@@ -2107,7 +2156,11 @@ PHP_METHOD(sync_SharedMemory, __construct)
 
 	if (Result < 0)
 	{
+#if PHP_VERSION_ID < 80500
 		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Shared memory object could not be created/opened", 0 TSRMLS_CC);
+#else
+		zend_throw_exception(zend_ce_exception, "Shared memory object could not be created/opened", 0 TSRMLS_CC);
+#endif
 
 		return;
 	}
