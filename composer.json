@@ -1,0 +1,9 @@
+{
+    "name": "php/sync",
+    "type": "php-ext",
+    "license": "MIT",
+    "description": "A PHP extension for Synchronization Objects (sync)",
+    "require": {
+        "php": ">= 8.0.0"
+    }
+}
